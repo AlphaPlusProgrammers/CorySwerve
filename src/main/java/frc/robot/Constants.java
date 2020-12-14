@@ -8,12 +8,14 @@
 package frc.robot;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static).  Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
 
@@ -26,12 +28,12 @@ public final class Constants {
     public static double FAST_SWERVE_ROTATION_SPEED = 0.5;
     public static double SLOW_SWERVE_ROTATION_SPEED = 0.1;
 
-    public static int driverButtonA = 1;                    // Target With Limelight Button       - Held
+    public static int driverButtonA = 1; // Target With Limelight Button - Held
     public static int driverButtonB = 2;
     public static int driverButtonX = 3;
-    public static int driverButtonY = 4;                    // Targeting Button                   - Held
-    public static int driverButtonLB = 5;                   // Strafe Easy Mode Button            - Held
-    public static int driverButtonRB = 6;                   // Point Turn Button                  - Held
+    public static int driverButtonY = 4; // Targeting Button - Held
+    public static int driverButtonLB = 5; // Strafe Easy Mode Button - Held
+    public static int driverButtonRB = 6; // Point Turn Button - Held
     public static int driverButtonBack = 7;
     public static int driverButtonStart = 8;
     public static int driverButtonLeftJoyClick = 9;

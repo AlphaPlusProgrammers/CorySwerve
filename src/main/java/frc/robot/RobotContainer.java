@@ -22,49 +22,47 @@ import edu.wpi.first.wpilibj2.command.Command;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  public static final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
+    // The robot's subsystems and commands are defined here...
+    public static final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
 
-  public static final DoTheDrive doTheDrive = new DoTheDrive(driveTrainSubsystem);
+    public static final DoTheDrive doTheDrive = new DoTheDrive(driveTrainSubsystem);
 
-  private static final Joystick driverJoystick = new Joystick(0);
+    private static final Joystick driverJoystick = new Joystick(0);
 
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Configure the button bindings
+        configureButtonBindings();
 
-  /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-    
-    driveTrainSubsystem.setDefaultCommand(doTheDrive);
-  }
-
-  /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-  }
-
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
-  }
-
-  public static double getDriverAxis(int axis) {
-    if (axis == 1 || axis == 5) {
-      return -driverJoystick.getRawAxis(axis);
-    } else {
-      return driverJoystick.getRawAxis(axis);
+        driveTrainSubsystem.setDefaultCommand(doTheDrive);
     }
-  }
+
+    /**
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by instantiating a {@link GenericHID} or one of its subclasses
+     * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+     * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+    }
+
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        // An ExampleCommand will run in autonomous
+        return null;
+    }
+
+    public static double getDriverAxis(int axis) {
+        if (axis == 1 || axis == 5) {
+            return -driverJoystick.getRawAxis(axis);
+        } else {
+            return driverJoystick.getRawAxis(axis);
+        }
+    }
 }

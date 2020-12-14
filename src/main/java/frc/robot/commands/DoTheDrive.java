@@ -13,40 +13,41 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class DoTheDrive extends CommandBase {
-  /**
-   * Creates a new DoTheDrive.
-   */
-  private DriveTrainSubsystem driveTrainSubsystem;
-  public DoTheDrive(DriveTrainSubsystem driveTrainSubsystem) {
-    this.driveTrainSubsystem = driveTrainSubsystem;
-    addRequirements(this.driveTrainSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+    /**
+     * Creates a new DoTheDrive.
+     */
+    private DriveTrainSubsystem driveTrainSubsystem;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+    public DoTheDrive(DriveTrainSubsystem driveTrainSubsystem) {
+        this.driveTrainSubsystem = driveTrainSubsystem;
+        addRequirements(this.driveTrainSubsystem);
+        // Use addRequirements() here to declare subsystem dependencies.
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    driveTrainSubsystem.moveSwerveAxis(RobotContainer.getDriverAxis(Constants.driverLeftAxisX), 
-                                           RobotContainer.getDriverAxis(Constants.driverLeftAxisY), 
-                                           RobotContainer.getDriverAxis(Constants.driverRightAxisX), 
-                                           RobotContainer.getDriverAxis(Constants.driverRightAxisY),
-                                           RobotContainer.getDriverAxis(Constants.driverLeftAxisTrigger),
-                                           RobotContainer.getDriverAxis(Constants.driverRightAxisTrigger));
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        driveTrainSubsystem.moveSwerveAxis(RobotContainer.getDriverAxis(Constants.driverLeftAxisX),
+                RobotContainer.getDriverAxis(Constants.driverLeftAxisY),
+                RobotContainer.getDriverAxis(Constants.driverRightAxisX),
+                RobotContainer.getDriverAxis(Constants.driverRightAxisY),
+                RobotContainer.getDriverAxis(Constants.driverLeftAxisTrigger),
+                RobotContainer.getDriverAxis(Constants.driverRightAxisTrigger));
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
