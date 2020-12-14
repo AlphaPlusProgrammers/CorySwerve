@@ -113,7 +113,7 @@ public class AlphaMotor extends SubsystemBase {
      * @return (long) The value in ticks that corresponds to the inputs.
      */
 
-    private long desiredTargetTicks(double x, double y) {
+    private long desiredTargetTicks(double x, double y, double curr_quad) {
 
         /*
          * Math Explanation
@@ -154,12 +154,12 @@ public class AlphaMotor extends SubsystemBase {
             multiplier = 2; // if stick is due south, then desired = number of
                             // ticks in quadrant * 2
 
-        } else if (quadrant(x, y) == 1 || quadrant(x, y) == 4) {
+        } else if (curr_quad == 1 || curr_quad == 4) {
             // if stick is in quadrants 1 or 4 it uses the direct ratio
 
             multiplier = (((Math.PI / 2) - (Math.atan(y / x))) / (Math.PI / 2));
 
-        } else if (quadrant(x, y) == 2 || quadrant(x, y) == 3) {
+        } else if (curr_quad == 2 || curr_quad == 3) {
             // if stick is in quadrants 1 or 4 it uses the ratio + 2, to
             // rotate by 180 degrees
 
@@ -220,19 +220,28 @@ public class AlphaMotor extends SubsystemBase {
     public void pointToTarget(double targetX, double targetY) {
 
         int usableEncoderCount = currentEncoderCount();
-
-        long desiredTarget = desiredTargetTicks(targetX, targetY); // The target position in ticks
+        int curr_quad = quadrant(targetX, targetY);
+        long desiredTarget = desiredTargetTicks(targetX, targetY, curr_quad); // The target position in ticks
         long targetDifference = desiredTarget - usableEncoderCount; // The distance between the current position and the desired target
-        int directionalMultiplier; // A placeholder to determine the direction of the motor
+        int directionalMultiplier = 0; // A placeholder to determine the direction of the motor
 
         if (targetDifference != 0) {// As long as we actually have a different target to go to, we continue to
                                     // actually go to the desired target
 
-            if (Math.abs(targetDifference) > 210) { // If the distance to the point is over 180 degrees, move in a anti-clockwise
-                                                    // direction
-                directionalMultiplier = 1;
+            if (curr_quad == 1 || curr_quad == 4) {
+                if (desiredTarget > usableEncoderCount) {
+                    directionalMultiplier = 1;
+                } else if ((desiredTarget > currentEncoderCount() - 210) || (desiredTarget - 420 > currentEncoderCount() - 210)) {
+                    directionalMultiplier = -1;
+                }
+            } else if (curr_quad == 2 || curr_quad == 3) {
+                if (desiredTarget < usableEncoderCount) {
+                    directionalMultiplier = -1;
+                } else if ((desiredTarget < currentEncoderCount() + 210) || (desiredTarget - 420 < currentEncoderCount() + 210)) {
+                    directionalMultiplier = -1;
+                }
             } else {
-                directionalMultiplier = -1;
+                throw new Error("Bruh like I thought you wouldn't get this error, like idk how to help at this point.");
             }
 
             if (Math.abs(targetDifference) > Constants.LARGE_SWERVE_ROTATION_ERROR) {
@@ -242,6 +251,7 @@ public class AlphaMotor extends SubsystemBase {
             } else {
                 stopMotors();
             }
+            
         }
     }
 
