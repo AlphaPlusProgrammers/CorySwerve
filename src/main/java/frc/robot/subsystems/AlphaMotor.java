@@ -113,7 +113,7 @@ public class AlphaMotor extends SubsystemBase {
      * @return (long) The value in ticks that corresponds to the inputs.
      */
 
-    private long desiredTargetTicks(double x, double y, double curr_quad) {
+    private long desiredTargetTicks(double x, double y) {
 
         /*
          * Math Explanation
@@ -154,17 +154,20 @@ public class AlphaMotor extends SubsystemBase {
             multiplier = 2; // if stick is due south, then desired = number of
                             // ticks in quadrant * 2
 
-        } else if (curr_quad == 1 || curr_quad == 4) {
-            // if stick is in quadrants 1 or 4 it uses the direct ratio
+        } else {
+            int curr_quad = quadrant(x, y);
+            if (curr_quad == 1 || curr_quad == 4) {
+                // if stick is in quadrants 1 or 4 it uses the direct ratio
 
-            multiplier = (((Math.PI / 2) - (Math.atan(y / x))) / (Math.PI / 2));
+                multiplier = (((Math.PI / 2) - (Math.atan(y / x))) / (Math.PI / 2));
 
-        } else if (curr_quad == 2 || curr_quad == 3) {
-            // if stick is in quadrants 1 or 4 it uses the ratio + 2, to
-            // rotate by 180 degrees
+            } else if (curr_quad == 2 || curr_quad == 3) {
+                // if stick is in quadrants 1 or 4 it uses the ratio + 2, to
+                // rotate by 180 degrees
 
-            multiplier = (2 + ((Math.PI / 2) - (Math.atan(y / x))) / (Math.PI / 2));
+                multiplier = (2 + ((Math.PI / 2) - (Math.atan(y / x))) / (Math.PI / 2));
 
+            }
         }
 
         directionTarget = Math.round(Constants.ENCODER_TICKS_IN_QUADRANT * multiplier);
@@ -181,7 +184,11 @@ public class AlphaMotor extends SubsystemBase {
 
     private int currentEncoderCount() {
 
-        return rotationEncoder.get() % (Constants.ENCODER_TICKS_IN_QUADRANT * 4);
+        if (rotationEncoder.get() > 0) {
+            return rotationEncoder.get();
+        } else  {
+            return rotationEncoder.get() + 420;
+        }
 
     }
 
@@ -219,35 +226,26 @@ public class AlphaMotor extends SubsystemBase {
 
     public void pointToTarget(double targetX, double targetY) {
 
-        int usableEncoderCount = currentEncoderCount();
-        int curr_quad = quadrant(targetX, targetY);
-        long desiredTarget = desiredTargetTicks(targetX, targetY, curr_quad); // The target position in ticks
-        long targetDifference = desiredTarget - usableEncoderCount; // The distance between the current position and the desired target
+        int currentPosition = currentEncoderCount();
+        long desiredTarget = desiredTargetTicks(targetX, targetY); // The target position in ticks
+        long targetDifference = desiredTarget - currentPosition; // The distance between the current position and the desired target
         int directionalMultiplier = 0; // A placeholder to determine the direction of the motor
 
-        if (targetDifference != 0) {// As long as we actually have a different target to go to, we continue to
+        if ((targetDifference != 0) || (targetDifference - 420 != 0) || (targetDifference + 420 != 0)) {// As long as we actually have a different target to go to, we continue to
                                     // actually go to the desired target
 
-            if (curr_quad == 1 || curr_quad == 4) {
-                if (desiredTarget > usableEncoderCount) {
-                    directionalMultiplier = 1;
-                } else if ((desiredTarget > currentEncoderCount() - 210) || (desiredTarget - 420 > currentEncoderCount() - 210)) {
-                    directionalMultiplier = -1;
-                }
-            } else if (curr_quad == 2 || curr_quad == 3) {
-                if (desiredTarget < usableEncoderCount) {
-                    directionalMultiplier = -1;
-                } else if ((desiredTarget < currentEncoderCount() + 210) || (desiredTarget - 420 < currentEncoderCount() + 210)) {
-                    directionalMultiplier = -1;
-                }
+            if (targetDifference > 210) {
+                directionalMultiplier = Math.round((targetDifference - 420) / Math.abs(targetDifference - 420));
+            } else if (targetDifference < -210){
+                directionalMultiplier = Math.round((targetDifference + 420) / Math.abs(targetDifference + 420));
             } else {
-                throw new Error("Bruh like I thought you wouldn't get this error, like idk how to help at this point.");
+                directionalMultiplier = Math.round((targetDifference) / Math.abs(targetDifference));
             }
 
             if (Math.abs(targetDifference) > Constants.LARGE_SWERVE_ROTATION_ERROR) {
-                moveMotor(Constants.FAST_SWERVE_ROTATION_SPEED * directionalMultiplier);
+                moveMotor(Constants.FAST_SWERVE_ROTATION_SPEED * -directionalMultiplier);
             } else if (Math.abs(targetDifference) > Constants.SMALL_SWERVE_ROTATION_ERROR) {
-                moveMotor(Constants.SLOW_SWERVE_ROTATION_SPEED * directionalMultiplier);
+                moveMotor(Constants.SLOW_SWERVE_ROTATION_SPEED * -directionalMultiplier);
             } else {
                 stopMotors();
             }
