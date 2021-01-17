@@ -22,9 +22,9 @@ public final class Constants {
     public static int TURRET_SPEED_MAX_OUTPUT = 1;
     public static int TURRET_SPEED_MIN_OUTPUT = -1;
     public static double STICK_ERROR = 0.05;
-    public static int ENCODER_TICKS_IN_QUADRANT = 105;
-    public static int LARGE_SWERVE_ROTATION_ERROR = 10;
-    public static int SMALL_SWERVE_ROTATION_ERROR = 2;
+    public static int ENCODER_TICKS_IN_QUADRANT = 105; // Can be modified if the number of ticks seems to change, 105 per quad = 420 per revolution
+    public static int LARGE_SWERVE_ROTATION_ERROR = 25; // These are modified if you expierence jitter, this value reduces how far the tire will spin at a fast speed
+    public static int SMALL_SWERVE_ROTATION_ERROR = 10; // This value is used as a hard stop, if the wheel gets within +- this value it will stop the rotation
     public static double FAST_SWERVE_ROTATION_SPEED = 0.5;
     public static double SLOW_SWERVE_ROTATION_SPEED = 0.1;
 
