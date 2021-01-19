@@ -21,6 +21,8 @@ public class AlphaMotor extends SubsystemBase {
      * Creates a new AlphaMotor.
      */
 
+    private double STICK_ERROR = Constants.STICK_ERROR;
+
     private TalonSRX rotationMotor; // The directional motor for the use of the
                                     // drive motor.
 
@@ -129,27 +131,25 @@ public class AlphaMotor extends SubsystemBase {
 
         double multiplier = 0.0; // Initialize multiplier
 
-        if (x >= -Constants.STICK_ERROR && x <= Constants.STICK_ERROR && y >= -Constants.STICK_ERROR
-                && y <= Constants.STICK_ERROR) {
+        if (x >= -STICK_ERROR && x <= STICK_ERROR && y >= -STICK_ERROR && y <= STICK_ERROR) {
 
-            multiplier = 0; // if stick is due east, then desired = number of
-                            // ticks in quadrant
+            multiplier = 0; // if stick is at center, then desired = 0
 
-        } else if (x >= 0 && y >= -Constants.STICK_ERROR && y <= Constants.STICK_ERROR) {
+        } else if (x >= STICK_ERROR && y >= -STICK_ERROR && y <= STICK_ERROR) {
 
             multiplier = 1; // if stick is due east, then desired = number of
-                            // ticks in quadrant
+                            // ticks in quadrant * 1
 
-        } else if (x <= 0 && y >= -Constants.STICK_ERROR && y <= Constants.STICK_ERROR) {
+        } else if (x <= -STICK_ERROR && y >= -STICK_ERROR && y <= STICK_ERROR) {
 
             multiplier = 3; // if stick is due west, then desired = number of
                             // ticks in quadrant * 3
 
-        } else if (y >= 0 && x >= -Constants.STICK_ERROR && x <= Constants.STICK_ERROR) {
+        } else if (y >= STICK_ERROR && x >= -STICK_ERROR && x <= STICK_ERROR) {
 
             multiplier = 0; // if stick is due north, then desired = 0
 
-        } else if (y <= 0 && x >= -Constants.STICK_ERROR && x <= Constants.STICK_ERROR) {
+        } else if (y <= -STICK_ERROR && x >= -STICK_ERROR && x <= STICK_ERROR) {
 
             multiplier = 2; // if stick is due south, then desired = number of
                             // ticks in quadrant * 2
