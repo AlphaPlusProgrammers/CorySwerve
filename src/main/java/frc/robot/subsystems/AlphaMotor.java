@@ -235,11 +235,26 @@ public class AlphaMotor extends SubsystemBase {
                                     // actually go to the desired target
 
             if (targetDifference > 210) {
-                directionalMultiplier = Math.round((targetDifference - 420) / Math.abs(targetDifference - 420));
+                //directionalMultiplier = Math.round((targetDifference - 420) / Math.abs(targetDifference - 420));
+                if(targetDifference-420 < 0){
+                    directionalMultiplier = -1;
+                }else{
+                    directionalMultiplier = 1;
+                }
             } else if (targetDifference < -210){
-                directionalMultiplier = Math.round((targetDifference + 420) / Math.abs(targetDifference + 420));
+                //directionalMultiplier = Math.round((targetDifference + 420) / Math.abs(targetDifference + 420));
+                if(targetDifference+420 < 0){
+                    directionalMultiplier = -1;
+                }else{
+                    directionalMultiplier = 1;
+                }
             } else {
-                directionalMultiplier = Math.round((targetDifference) / Math.abs(targetDifference));
+               // directionalMultiplier = Math.round((targetDifference) / Math.abs(targetDifference));
+               if(targetDifference < 0){
+                   directionalMultiplier = -1;
+               }else{
+                   directionalMultiplier = 1;
+               }
             }
 
             if (Math.abs(targetDifference) > Constants.LARGE_SWERVE_ROTATION_ERROR) {
