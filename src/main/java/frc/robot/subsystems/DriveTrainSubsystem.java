@@ -58,13 +58,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
         double frontDesiredSpeed = findSpeed(rightT, leftT);
         double rearDesiredSpeed = frontDesiredSpeed;
 
-        if (leftY < 0) {
+        /*if (leftY < 0) {
             frontDesiredSpeed = -frontDesiredSpeed;
         }
 
         if (rightY < 0) {
             rearDesiredSpeed = -rearDesiredSpeed;
-        }
+        }*/
 
         moveDriveMotors(frontDesiredSpeed, rearDesiredSpeed);
 

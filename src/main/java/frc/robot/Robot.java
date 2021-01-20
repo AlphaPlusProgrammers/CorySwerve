@@ -68,6 +68,34 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+
+        SmartDashboard.putNumber("x", RobotContainer.getDriverAxis(0));
+        SmartDashboard.putNumber("y", RobotContainer.getDriverAxis(1));
+
+        SmartDashboard.putNumber("FL Encoder", RobotContainer.driveTrainSubsystem.motorFL.currentEncoderCount());
+        SmartDashboard.putNumber("FR Encoder", RobotContainer.driveTrainSubsystem.motorFR.currentEncoderCount());
+        SmartDashboard.putNumber("RL Encoder", RobotContainer.driveTrainSubsystem.motorRL.currentEncoderCount());
+        SmartDashboard.putNumber("RR Encoder", RobotContainer.driveTrainSubsystem.motorRR.currentEncoderCount());
+
+        SmartDashboard.putNumber("FL Remaining", RobotContainer.driveTrainSubsystem.motorFL.encoderRemainingValue);
+        SmartDashboard.putNumber("FR Remaining", RobotContainer.driveTrainSubsystem.motorFR.encoderRemainingValue);
+        SmartDashboard.putNumber("RL Remaining", RobotContainer.driveTrainSubsystem.motorRL.encoderRemainingValue);
+        SmartDashboard.putNumber("RR Remaining", RobotContainer.driveTrainSubsystem.motorRR.encoderRemainingValue);
+
+        SmartDashboard.putNumber("FL Target", RobotContainer.driveTrainSubsystem.motorFL.directionTarget);
+        SmartDashboard.putNumber("FR Target", RobotContainer.driveTrainSubsystem.motorFR.directionTarget);
+        SmartDashboard.putNumber("RL Target", RobotContainer.driveTrainSubsystem.motorRL.directionTarget);
+        SmartDashboard.putNumber("RR Target", RobotContainer.driveTrainSubsystem.motorRR.directionTarget);
+
+        SmartDashboard.putBoolean("FL Prox", RobotContainer.driveTrainSubsystem.motorFL.proxValue());
+        SmartDashboard.putBoolean("FR Prox", RobotContainer.driveTrainSubsystem.motorFR.proxValue());
+        SmartDashboard.putBoolean("RL Prox", RobotContainer.driveTrainSubsystem.motorRL.proxValue());
+        SmartDashboard.putBoolean("RR Prox", RobotContainer.driveTrainSubsystem.motorRR.proxValue());
+
+        SmartDashboard.putBoolean("FL InMethod", RobotContainer.driveTrainSubsystem.motorFL.inMethod);
+        SmartDashboard.putBoolean("FR InMethod", RobotContainer.driveTrainSubsystem.motorFR.inMethod);
+        SmartDashboard.putBoolean("RL InMethod", RobotContainer.driveTrainSubsystem.motorRL.inMethod);
+        SmartDashboard.putBoolean("RR InMethod", RobotContainer.driveTrainSubsystem.motorRR.inMethod);
     }
 
     /**
@@ -114,10 +142,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("x", RobotContainer.getDriverAxis(0));
         SmartDashboard.putNumber("y", RobotContainer.getDriverAxis(1));
 
-        SmartDashboard.putNumber("FL Encoder", RobotContainer.driveTrainSubsystem.motorFL.encoderValue());
-        SmartDashboard.putNumber("FR Encoder", RobotContainer.driveTrainSubsystem.motorFR.encoderValue());
-        SmartDashboard.putNumber("RL Encoder", RobotContainer.driveTrainSubsystem.motorRL.encoderValue());
-        SmartDashboard.putNumber("RR Encoder", RobotContainer.driveTrainSubsystem.motorRR.encoderValue());
+        SmartDashboard.putNumber("FL Encoder", RobotContainer.driveTrainSubsystem.motorFL.currentEncoderCount());
+        SmartDashboard.putNumber("FR Encoder", RobotContainer.driveTrainSubsystem.motorFR.currentEncoderCount());
+        SmartDashboard.putNumber("RL Encoder", RobotContainer.driveTrainSubsystem.motorRL.currentEncoderCount());
+        SmartDashboard.putNumber("RR Encoder", RobotContainer.driveTrainSubsystem.motorRR.currentEncoderCount());
 
         SmartDashboard.putNumber("FL Remaining", RobotContainer.driveTrainSubsystem.motorFL.encoderRemainingValue);
         SmartDashboard.putNumber("FR Remaining", RobotContainer.driveTrainSubsystem.motorFR.encoderRemainingValue);
@@ -133,6 +161,11 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("FR Prox", RobotContainer.driveTrainSubsystem.motorFR.proxValue());
         SmartDashboard.putBoolean("RL Prox", RobotContainer.driveTrainSubsystem.motorRL.proxValue());
         SmartDashboard.putBoolean("RR Prox", RobotContainer.driveTrainSubsystem.motorRR.proxValue());
+
+        SmartDashboard.putBoolean("FL InMethod", RobotContainer.driveTrainSubsystem.motorFL.inMethod);
+        SmartDashboard.putBoolean("FR InMethod", RobotContainer.driveTrainSubsystem.motorFR.inMethod);
+        SmartDashboard.putBoolean("RL InMethod", RobotContainer.driveTrainSubsystem.motorRL.inMethod);
+        SmartDashboard.putBoolean("RR InMethod", RobotContainer.driveTrainSubsystem.motorRR.inMethod);
 
         RobotContainer.driveTrainSubsystem.zeroAllEncodersBasedOnProx();
     }

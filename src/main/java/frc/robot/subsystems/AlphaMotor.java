@@ -35,6 +35,8 @@ public class AlphaMotor extends SubsystemBase {
 
     public long encoderRemainingValue;
 
+    public boolean inMethod;
+
     /**
      * Sets the min and max output of the turreting motor
      * 
@@ -182,9 +184,9 @@ public class AlphaMotor extends SubsystemBase {
      * @return (int) The rotation motor's encoder count
      */
 
-    private int currentEncoderCount() {
+    public int currentEncoderCount() {
 
-        if (rotationEncoder.get() > 0) {
+        if (rotationEncoder.get() >= 0) {
             return rotationEncoder.get();
         } else  {
             return rotationEncoder.get() + 420;
@@ -228,23 +230,29 @@ public class AlphaMotor extends SubsystemBase {
 
         int currentPosition = currentEncoderCount();
         long desiredTarget = desiredTargetTicks(targetX, targetY); // The target position in ticks
-        long targetDifference = desiredTarget - currentPosition; // The distance between the current position and the desired target
+        encoderRemainingValue = desiredTarget - currentPosition; // The distance between the current position and the desired target
         int directionalMultiplier = 0; // A placeholder to determine the direction of the motor
+        
+        inMethod = false;
 
-        if ((targetDifference != 0) || (targetDifference - 420 != 0) || (targetDifference + 420 != 0)) {// As long as we actually have a different target to go to, we continue to
+        if ((encoderRemainingValue != 0) || (encoderRemainingValue - 420 != 0) || (encoderRemainingValue + 420 != 0)) {// As long as we actually have a different target to go to, we continue to
                                     // actually go to the desired target
 
-            if (targetDifference > 210) {
-                directionalMultiplier = Math.round((targetDifference - 420) / Math.abs(targetDifference - 420));
-            } else if (targetDifference < -210){
-                directionalMultiplier = Math.round((targetDifference + 420) / Math.abs(targetDifference + 420));
+            inMethod = true;
+
+            if (encoderRemainingValue > 210 && encoderRemainingValue - 420 != 0) {
+                directionalMultiplier = Math.round((encoderRemainingValue - 420) / Math.abs(encoderRemainingValue - 420));
+            } else if (encoderRemainingValue < -210 && encoderRemainingValue + 420 != 0){
+                directionalMultiplier = Math.round((encoderRemainingValue + 420) / Math.abs(encoderRemainingValue + 420));
+            } else if (encoderRemainingValue < 210 && encoderRemainingValue > -210 && encoderRemainingValue != 0) {
+                directionalMultiplier = Math.round((encoderRemainingValue) / Math.abs(encoderRemainingValue));
             } else {
-                directionalMultiplier = Math.round((targetDifference) / Math.abs(targetDifference));
+                directionalMultiplier = 0;
             }
 
-            if (Math.abs(targetDifference) > Constants.LARGE_SWERVE_ROTATION_ERROR) {
+            if (Math.abs(encoderRemainingValue) > Constants.LARGE_SWERVE_ROTATION_ERROR) {
                 moveMotor(Constants.FAST_SWERVE_ROTATION_SPEED * -directionalMultiplier);
-            } else if (Math.abs(targetDifference) > Constants.SMALL_SWERVE_ROTATION_ERROR) {
+            } else if (Math.abs(encoderRemainingValue) > Constants.SMALL_SWERVE_ROTATION_ERROR) {
                 moveMotor(Constants.SLOW_SWERVE_ROTATION_SPEED * -directionalMultiplier);
             } else {
                 stopMotors();
@@ -299,14 +307,16 @@ public class AlphaMotor extends SubsystemBase {
     }
 
     private long encoderRemaining(long targetValue, boolean abs) {
+        
+        long encRem;
 
         if (abs) {
-            encoderRemainingValue = Math.abs(targetValue - encoderValue());
+            encRem = Math.abs(targetValue - encoderValue());
         } else {
-            encoderRemainingValue = targetValue - encoderValue();
+            encRem = targetValue - encoderValue();
         }
 
-        return encoderRemainingValue;
+        return encRem;
     }
 
 }
